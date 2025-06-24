@@ -1,202 +1,356 @@
-# Minishell
+# 🐚 Minishell
 
-A simple Unix-style command-line shell built as part of the 42 School curriculum.  
-Implements core shell features (`execve`, `fork`, pipes, redirections, built-ins) with optional bonus (`&&`/`||`, globbing). Written in C, using your own Libft utilities.
+[![42 School](https://img.shields.io/badge/42-School-000000?style=flat&logo=42&logoColor=white)](https://42.fr)
+[![Language](https://img.shields.io/badge/Language-C-blue.svg)](https://en.wikipedia.org/wiki/C_(programming_language))
+[![Norm](https://img.shields.io/badge/Norm-42-brightgreen.svg)](https://github.com/42School/norminette)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
----
+A minimal UNIX-like shell implementation in C, designed to understand the fundamentals of process creation, signal handling, and command interpretation. This project recreates essential shell functionalities while maintaining clean, modular code architecture.
 
-## Table of Contents
+## 🎯 Project Goals
 
-1. [Features](#features)  
-2. [Prerequisites](#prerequisites)  
-3. [Installation & Build](#installation--build)  
-4. [Usage](#usage)  
-5. [Project Structure](#project-structure)  
-6. [Git & GitHub Workflow](#git--github-workflow)  
-7. [Testing](#testing)  
-8. [Coding Standards](#coding-standards)  
-9. [Contributing](#contributing)  
-10. [License](#license)  
+This implementation focuses on:
 
----
+- **Understanding system calls**: Deep dive into `fork`, `execve`, `wait`, and signal handling
+- **Process management**: Creating child processes and managing their lifecycle  
+- **Command parsing**: Tokenization, syntax analysis, and building command structures
+- **I/O redirection**: Implementing file descriptors manipulation for `<`, `>`, `>>`, `<<`
+- **Inter-process communication**: Connecting processes through pipes `|`
+- **Environment handling**: Variable expansion and built-in command implementation
 
-## Features
+## ✨ Features
 
-- **Core execution**: `fork` + `execve` + simple pipelines (`|`)  
-- **Parsing & expansion**: tokenization, quotes, `$VAR`  
-- **Redirections**: `<`, `>`, `>>`, here-document (`<<`)  
-- **Built-ins**: `cd`, `echo`, `exit`, `env`, `export`, `unset`, `pwd`  
-- **Signals**: `SIGINT`/`SIGQUIT` handling for parent vs. child  
-- **Bonus** (optional): `&&` / `||`, wildcard globbing (`*.c`, etc.)
+### Core Functionality
 
----
+- ✅ **Command Execution**: Execute system commands with arguments
+- ✅ **Built-in Commands**: `echo`, `cd`, `pwd`, `export`, `unset`, `env`, `exit`
+- ✅ **Pipes**: Chain multiple commands with `|` operator
+- ✅ **Redirections**: Input `<`, output `>`, append `>>`, here-document `<<`
+- ✅ **Quote Handling**: Single `'` and double `"` quotes with proper escaping
+- ✅ **Variable Expansion**: Environment variables with `$VAR` syntax
+- ✅ **Signal Management**: Handle `Ctrl+C`, `Ctrl+\`, `Ctrl+D` appropriately
 
-## Prerequisites
+### Bonus Features
 
-- A Unix-like environment (Linux or macOS)  
-- GCC (or Clang) with C99 support  
-- Make  
-- Access to a POSIX shell for running tests  
+- 🔥 **Logical Operators**: `&&` (AND) and `||` (OR) for conditional execution
+- 🔥 **Wildcards**: Filename expansion with `*` globbing
+- 🔥 **Subshells**: Command substitution and grouping
 
----
+## 📋 Requirements
 
-## Installation & Build
+- POSIX-compliant system (Linux or macOS)
+- GCC or Clang compiler with C99 support
+- Make build system
+- GNU Readline library (for command history and editing)
 
-1. **Clone the repo**  
+## 🚀 Quick Start
+
+### Installation
+
+1. **Clone the repository**
+
    ```bash
-   git clone https://github.com/<your-org>/minishell.git
+   git clone https://github.com/Yyunozor/minishell.git
    cd minishell
    ```
 
-2. **Build**  
+2. **Build the project**
+
    ```bash
    make
-   ```  
-   This will compile both your custom `libft` and the shell binary `minishell`.
-
-3. **Clean**  
-   ```bash
-   make clean       # remove object files
-   make fclean      # remove object files & binary
-   make re          # fclean + all
    ```
 
----
+   This compiles both the custom `libft` library and the `minishell` executable.
 
-## Usage
+3. **Run the shell**
 
-Launch your shell:
+   ```bash
+   ./minishell
+   ```
+
+### Build Commands
+
 ```bash
-./minishell
+make clean   # Remove object files
+make fclean  # Remove object files and executables
+make re      # Clean rebuild (fclean + make)
+make bonus   # Build with bonus features
 ```
 
-Basic examples:
+## 💡 Usage Examples
+
+Launch the shell and try these commands:
+
 ```bash
-$ echo "Hello, world!"
-Hello, world!
-$ ls -l | grep minishell
--rwxr-xr-x  1 you  staff  123456 Jun 24 12:00 minishell
-$ cat < input.txt | sort > output.txt
+minishell$ echo "Hello, World!"
+Hello, World!
+
+minishell$ ls -la | grep minishell
+-rwxr-xr-x  1 user  staff  45678 Jun 24 12:00 minishell
+
+minishell$ export MY_VAR="test"
+minishell$ echo $MY_VAR
+test
+
+minishell$ cat < input.txt | sort > output.txt
+
+minishell$ cd .. && pwd
+/Users/yyuno/Developer/42/Cursus
+
+minishell$ exit
 ```
 
-Exit with:
-```bash
-$ exit
-```
+### Built-in Commands
 
----
+| Command | Description | Example |
+|---------|-------------|---------|
+| `echo` | Display text with optional `-n` flag | `echo -n "Hello"` |
+| `cd` | Change directory | `cd /path/to/dir` |
+| `pwd` | Print working directory | `pwd` |
+| `export` | Set environment variables | `export PATH=$PATH:/bin` |
+| `unset` | Remove environment variables | `unset MY_VAR` |
+| `env` | Display environment variables | `env` |
+| `exit` | Exit the shell | `exit 0` |
 
-## Project Structure
+## 📁 Project Architecture
 
-```plaintext
+```text
 minishell/
-├── includes/               # public headers
-├── libft/                  # custom Libft utilities
-├── srcs/                   # all shell source code
-│   ├── lexer/              
-│   ├── parser/             
-│   ├── expander/           
-│   ├── executor/           
-│   ├── redirections/       
-│   ├── builtins/           
-│   ├── signals/            
-│   └── bonus/              
-├── tests/                  # manual & automated tests
-├── scripts/                # helper scripts (build, clean, run)
-├── docs/                   # design notes, UML diagrams
-├── .github/                # CI workflows
-├── Makefile
-├── README.md
-└── .gitignore
+├── includes/                    # Public headers
+│   └── minishell.h             # Main header with structures and prototypes
+├── libft/                      # Custom C library
+│   ├── includes/
+│   │   └── ft_libft.h         # Libft function prototypes
+│   └── srcs/
+│       ├── ft_strutils.c      # String manipulation utilities
+│       └── ft_memutils.c      # Memory management utilities
+├── srcs/                       # Shell implementation
+│   ├── main.c                 # Entry point and main loop
+│   ├── lexer/                 # Tokenization phase
+│   │   ├── lexer.c           # Token identification and creation
+│   │   └── lexer.h           # Lexer structures and functions
+│   ├── parser/                # Syntax analysis phase
+│   │   ├── parser.c          # AST construction from tokens
+│   │   └── parser.h          # Parser structures and functions
+│   ├── expander/              # Variable and quote processing
+│   │   ├── expander.c        # Environment variable expansion
+│   │   └── expander.h        # Expansion utilities
+│   ├── executor/              # Command execution engine
+│   │   ├── executor.c        # Process creation and management
+│   │   └── executor.h        # Execution structures
+│   ├── redirections/          # I/O redirection handling
+│   │   ├── redirect.c        # File descriptor manipulation
+│   │   └── redirect.h        # Redirection utilities
+│   ├── builtins/              # Built-in command implementations
+│   │   ├── cd.c              # Change directory command
+│   │   ├── echo.c            # Echo command with -n option
+│   │   ├── env.c             # Environment display
+│   │   ├── exit.c            # Shell termination
+│   │   ├── export.c          # Variable export to environment
+│   │   ├── pwd.c             # Print working directory
+│   │   └── unset.c           # Remove environment variables
+│   ├── signals/               # Signal handling
+│   │   ├── signals.c         # SIGINT, SIGQUIT management
+│   │   └── signals.h         # Signal handler prototypes
+│   └── bonus/                 # Optional advanced features
+│       ├── logical_ops.c     # && and || operators
+│       └── globbing.c        # Wildcard expansion
+├── tests/                     # Testing framework
+│   ├── mandatory/            # Core functionality tests
+│   ├── bonus/                # Bonus feature tests
+│   └── run_tests.sh          # Automated test runner
+├── scripts/                   # Build and utility scripts
+│   ├── build.sh              # Custom build script
+│   └── clean.sh              # Cleanup script
+├── docs/                      # Documentation
+│   └── design.md             # Architecture and design decisions
+├── .github/                   # GitHub workflows
+│   └── workflows/
+│       └── ci.yml            # Continuous integration
+├── Makefile                   # Build configuration
+├── README.md                  # This file
+└── .gitignore                 # Git ignore patterns
 ```
 
----
+## 🔄 Development Workflow
 
-## Git & GitHub Workflow
+This project follows a **Feature-Branch Git workflow** for collaborative development:
 
-Since you’re two developers, adopt a simple **Git Feature-Branch** workflow:
+### Branch Structure
 
-1. **Main Branch**  
-   - `main` (or `master`) always holds stable, reviewed code.
+- **`main`**: Production-ready, stable code only
+- **`dev/username`**: Personal development branches
+- **`feature/description`**: Specific feature implementations
 
-2. **Feature Branches**  
-   - Create a new branch for each task/feature:  
-     ```bash
-     git checkout main
-     git pull origin main
-     git checkout -b feature/lexer-improvements
-     ```
-   - Work and commit early & often:
-     ```bash
-     git add <files>
-     git commit -m "feat(lexer): handle escaped spaces"
-     ```
+### Workflow Steps
 
-3. **Push & Pull Request (PR)**  
-   - Push your branch:
-     ```bash
-     git push -u origin feature/lexer-improvements
-     ```
-   - On GitHub, open a PR targeting `main`.  
-   - Include a clear description and link to the related task.
+1. **Sync with main branch**
 
-4. **Code Review & Merge**  
-   - Your partner reviews the PR, requests changes or approves.  
-   - Once approved, merge (via GitHub UI) with “Squash and merge” to keep history clean.
+   ```bash
+   git checkout main
+   git pull origin main
+   ```
 
-5. **Keep in Sync**  
-   - Regularly pull from `main` to avoid drift:
-     ```bash
-     git checkout main
-     git pull
-     git checkout feature/lexer-improvements
-     git merge main
-     ```
+2. **Create feature branch**
 
-6. **Resolving Conflicts**  
-   - If merge conflicts arise, use:
-     ```bash
-     git mergetool
-     git add <resolved files>
-     git commit
-     ```
-   - Communicate on Slack/Discord to coordinate overlapping changes.
+   ```bash
+   git checkout -b feature/lexer-implementation
+   ```
 
----
+3. **Develop and commit changes**
 
-## Testing
+   ```bash
+   git add .
+   git commit -m "feat(lexer): implement token recognition for pipes and redirections"
+   ```
 
-Run all tests with:
+4. **Push and create pull request**
+
+   ```bash
+   git push -u origin feature/lexer-implementation
+   gh pr create --title "Implement lexer token recognition" --body "Detailed description"
+   ```
+
+5. **Code review and merge**
+   - Review process via GitHub PR
+   - Squash and merge to keep history clean
+   - Delete feature branch after merge
+
+### Commit Message Convention
+
+```text
+type(scope): description
+
+Examples:
+feat(parser): add AST node creation for pipe commands
+fix(executor): resolve memory leak in child process cleanup
+docs(readme): update installation instructions
+test(builtins): add comprehensive tests for export command
+```
+
+## 🧪 Testing
+
+### Running Tests
+
+Execute the complete test suite:
+
 ```bash
 ./tests/run_tests.sh
 ```
-- By default, runs **mandatory** tests.  
-- To include bonus tests:
-  ```bash
-  ./tests/run_tests.sh --bonus
-  ```
+
+Run tests with bonus features:
+
+```bash
+./tests/run_tests.sh --bonus
+```
+
+### Manual Testing
+
+Test individual components:
+
+```bash
+# Test basic commands
+echo "ls -la" | ./minishell
+
+# Test pipes and redirections
+echo "ls | grep minishell > output.txt" | ./minishell
+
+# Test built-ins
+echo -e "export TEST=value\necho \$TEST\nexit" | ./minishell
+```
+
+## 📚 Technical Implementation
+
+### Key Components
+
+1. **Lexical Analysis**: Tokenizes input into meaningful units (commands, operators, arguments)
+2. **Parsing**: Builds an Abstract Syntax Tree (AST) from tokens
+3. **Expansion**: Handles variable substitution and quote removal
+4. **Execution Engine**: Manages process creation, pipes, and I/O redirection
+5. **Signal Handling**: Properly manages shell signals in interactive mode
+
+### Memory Management
+
+- All heap allocations are properly freed
+- No memory leaks in normal operation
+- Valgrind-clean implementation
+- Custom error handling with cleanup
+
+### Error Handling
+
+```c
+// Example error handling pattern
+if (!(ast = parse_tokens(tokens)))
+{
+    cleanup_tokens(tokens);
+    return (error_exit("Parse error", 2));
+}
+```
+
+## 📝 42 School Compliance
+
+### Norm Requirements
+
+- ✅ Maximum 25 lines per function
+- ✅ Maximum 80 characters per line
+- ✅ Maximum 5 functions per file
+- ✅ Forbidden functions properly handled
+- ✅ No global variables (except for signal handling)
+
+### Allowed Functions
+
+```c
+// System calls
+fork, execve, wait, waitpid, wait3, wait4
+exit, getcwd, chdir, stat, lstat, fstat
+open, close, read, write, dup, dup2, pipe
+
+// Memory management
+malloc, free
+
+// String/IO functions
+printf, perror, strerror
+access, isatty, ttyname, ttyslot, ioctl, getenv, tcsetattr, tcgetattr, tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
+
+// Signal handling
+signal, sigaction, sigemptyset, sigaddset, kill
+
+// Terminal control
+rl_clear_history, rl_on_new_line, rl_replace_line, rl_redisplay
+add_history, readline
+```
+
+## 🤝 Contributing
+
+1. **Fork** the repository
+2. **Create** a feature branch: `git checkout -b feature/amazing-feature`
+3. **Commit** your changes: `git commit -m 'feat: add amazing feature'`
+4. **Push** to the branch: `git push origin feature/amazing-feature`
+5. **Open** a Pull Request with detailed description
+
+### Code Style Guidelines
+
+- Follow 42 Norm strictly
+- Use clear, descriptive variable names
+- Comment complex algorithms
+- Write modular, testable functions
+- Update tests for new features
+
+## 📄 License
+
+Distributed under the MIT License. See [LICENSE](LICENSE) for details.
+
+## 🎓 Learning Outcomes
+
+This project teaches essential systems programming concepts:
+
+- **Process Management**: Understanding Unix process model
+- **Inter-Process Communication**: Pipes, file descriptors, and redirection
+- **Signal Handling**: Proper signal management in interactive applications
+- **Memory Management**: Manual memory allocation and cleanup
+- **String Processing**: Parsing and tokenization techniques
+- **Software Architecture**: Modular design and separation of concerns
 
 ---
 
-## Coding Standards
-
-- Follow the 42 **Norm**:  
-  - Max 25 lines per function, 80 columns per line, no more than 5 functions per file, etc.  
-- Header comment on each `.c`/`.h`: project, author, creation/update dates.  
-- Use descriptive variable names and modular functions.
-
----
-
-## Contributing
-
-1. Fork the repo.  
-2. Follow the **Git & GitHub Workflow** above.  
-3. Write clear, atomic commits.  
-4. Open PRs against `main`.  
-5. Tag your partner or assign reviewers before merging.
-
----
-
-## License
-
-This project is released under the [MIT License](LICENSE).  
+Made with ❤️ for 42 School
