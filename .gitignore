@@ -32,3 +32,8 @@ Thumbs.db
 # Test files
 test_*
 a.out
+
+# Documentation generated files
+docs/html/
+docs/latex/
+Doxyfile.bak

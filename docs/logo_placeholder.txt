@@ -1,0 +1,5 @@
+# Simple Logo Placeholder
+# This is a placeholder for the project logo
+# You can replace this with an actual PNG image later
+
+echo "Creating a simple ASCII logo as PNG placeholder..."

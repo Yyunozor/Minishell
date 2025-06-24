@@ -6,7 +6,7 @@
 #    By: anpayot <anpayot@student.42lausanne.ch>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/24 13:42:56 by anpayot           #+#    #+#              #
-#    Updated: 2025/06/24 13:51:35 by anpayot          ###   ########.fr        #
+#    Updated: 2025/06/24 14:22:32 by anpayot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -201,6 +201,19 @@ docs:
 	@echo "$(BLUE)Generating documentation...$(RESET)"
 	@doxygen Doxyfile 2>/dev/null || echo "$(YELLOW)Doxygen not found, skipping...$(RESET)"
 
+# Open documentation in browser
+docs-open:
+	@./scripts/docs.sh open
+
+# Serve documentation with HTTP server
+docs-serve:
+	@./scripts/docs.sh serve
+
+# Clean documentation
+docs-clean:
+	@echo "$(BLUE)Cleaning documentation...$(RESET)"
+	@rm -rf docs/html docs/latex
+
 # Show help
 help:
 	@echo "$(CYAN)Minishell Makefile Help$(RESET)"
@@ -219,6 +232,9 @@ help:
 	@echo "  $(GREEN)setup$(RESET)    - Setup development environment"
 	@echo "  $(GREEN)run$(RESET)      - Build and run the shell"
 	@echo "  $(GREEN)docs$(RESET)     - Generate documentation"
+	@echo "  $(GREEN)docs-open$(RESET) - Open documentation in browser"
+	@echo "  $(GREEN)docs-serve$(RESET) - Serve documentation with HTTP server"
+	@echo "  $(GREEN)docs-clean$(RESET) - Clean documentation"
 	@echo "  $(GREEN)help$(RESET)     - Show this help message"
 
 # Print project statistics
@@ -243,7 +259,7 @@ rebuild-executor:
 	@make $(NAME)
 
 # Phony targets
-.PHONY: all bonus debug sanitize test norm leaks clean fclean re install setup run docs help stats rebuild-lexer rebuild-parser rebuild-executor
+.PHONY: all bonus debug sanitize test norm leaks clean fclean re install setup run docs docs-open docs-serve docs-clean help stats rebuild-lexer rebuild-parser rebuild-executor
 
 # Silent mode
 .SILENT:
