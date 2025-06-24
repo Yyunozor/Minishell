@@ -1,696 +1,570 @@
 # 🐚 Minishell
 
-<div align="center">
+[![42 School](https://img.shields.io/badge/42-School-000000?style=flat&logo=42&logoColor=white)](https://42.fr/)
+[![C](https://img.shields.io/badge/C-00599C?style=flat&logo=c&logoColor=white)](https://en.wikipedia.org/wiki/C_(programming_language))
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-![42 School](https://img.shields.io/badge/42-School-000000?style=for-the-badge&logo=42&logoColor=white)
-![C](https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white)
-![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
-![macOS](https://img.shields.io/badge/macOS-000000?style=for-the-badge&logo=apple&logoColor=white)
+A robust shell implementation in C that recreates the core functionality of bash. This project demonstrates systems programming concepts including process management, file descriptors, signal handling, and command parsing.
 
-*Un shell UNIX minimal et robuste développé en C pour 42 School*
+## 📋 Table of Contents
 
-[Installation](#-installation) • [Usage](#-usage) • [Collaboration](#-collaboration-avec-git--github) • [Documentation](#-documentation)
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Project Structure](#project-structure)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Git Workflow](#git-workflow-for-collaboration)
+- [Development Guidelines](#development-guidelines)
+- [Testing](#testing)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [Resources](#resources)
 
-</div>
+## 🎯 Project Overview
 
----
+Minishell is a simplified shell interpreter that provides a command-line interface similar to bash. It handles command execution, environment variables, redirections, pipes, and built-in commands while maintaining compatibility with POSIX standards.
 
-## 📋 Table des Matières
+### Learning Objectives
 
-- [🎯 À Propos](#-à-propos)
-- [✨ Fonctionnalités](#-fonctionnalités)
-- [🔧 Prérequis](#-prérequis)
-- [🚀 Installation](#-installation)
-- [📖 Usage](#-usage)
-- [🤝 Collaboration avec Git & GitHub](#-collaboration-avec-git--github)
-- [🏗️ Architecture](#️-architecture)
-- [🧪 Tests](#-tests)
-- [🔄 Workflow de Développement](#-workflow-de-développement)
-- [📚 Documentation](#-documentation)
-- [🛠️ Dépannage](#️-dépannage)
-- [👥 Équipe](#-équipe)
+- Process creation and management (`fork`, `execve`, `wait`)
+- File descriptor manipulation and I/O redirection
+- Signal handling and process control
+- Memory management and error handling
+- Parsing and lexical analysis
+- Inter-process communication via pipes
 
-## 🎯 À Propos
+## ⭐ Features
 
-Minishell est une implémentation complète d'un shell UNIX développée dans le cadre du cursus 42 School. Ce projet vise à comprendre les mécanismes fondamentaux d'un interpréteur de commandes, de la gestion des processus à l'analyse syntaxique, en passant par la manipulation des signaux système.
+### Core Functionality
 
-### Objectifs Pédagogiques
+- ✅ Command execution with PATH resolution
+- ✅ Built-in commands implementation
+- ✅ Environment variable handling
+- ✅ Input/Output redirections
+- ✅ Pipeline execution
+- ✅ Signal handling
+- ✅ Quote parsing and escaping
+- ✅ Command history (with readline)
 
-- **Compréhension système** : Maîtrise des appels système UNIX/Linux
-- **Gestion mémoire** : Allocation/libération sans fuites mémoire
-- **Architecture logicielle** : Conception modulaire et maintenable
-- **Travail d'équipe** : Collaboration avec Git/GitHub
+### Built-in Commands
 
-## ✨ Fonctionnalités
+| Command | Description | Example |
+|---------|-------------|---------|
+| `echo` | Display text with `-n` option | `echo -n "Hello"` |
+| `cd` | Change directory (relative/absolute) | `cd /home/user` |
+| `pwd` | Print working directory | `pwd` |
+| `export` | Set environment variables | `export VAR=value` |
+| `unset` | Unset environment variables | `unset VAR` |
+| `env` | Display environment variables | `env` |
+| `exit` | Exit shell with status code | `exit 0` |
 
-### 🎯 Fonctionnalités Obligatoires
+### Advanced Features
 
-| Fonctionnalité | Description | Statut |
-|---------------|-------------|--------|
-| **Exécution de commandes** | Lancement de programmes système | ✅ |
-| **Built-ins** | `echo`, `cd`, `pwd`, `export`, `unset`, `env`, `exit` | ✅ |
-| **Pipes** | Chaînage de commandes avec `\|` | ✅ |
-| **Redirections** | `<`, `>`, `>>`, `<<` (heredoc) | ✅ |
-| **Quotes** | Gestion des guillemets simples `'` et doubles `"` | ✅ |
-| **Variables** | Expansion des variables d'environnement `$VAR` | ✅ |
-| **Signaux** | `Ctrl+C`, `Ctrl+\`, `Ctrl+D` | ✅ |
+- 🔄 Command substitution (`$(command)`)
+- 🔗 Logical operators (`&&`, `||`)
+- 📁 Wildcards (`*`) - *Bonus*
+- 🔀 Here-document (`<<`) - *Bonus*
+- 📊 Process substitution - *Bonus*
 
-### 🌟 Fonctionnalités Bonus
+## 📁 Project Structure
 
-| Fonctionnalité | Description | Statut |
-|---------------|-------------|--------|
-| **Opérateurs logiques** | `&&` et `\|\|` | 🚧 En cours |
-| **Wildcards** | Expansion des `*` | 📋 Planifié |
-
-## 🔧 Prérequis
-
-### Système & Outils
-
-- **Système** : Linux ou macOS (compatible POSIX)
-- **Compilateur** : GCC >= 9.0 ou Clang >= 10.0 avec support C99
-- **Build system** : GNU Make >= 3.81
-- **Bibliothèques** : GNU Readline (pour historique et édition de ligne)
-- **Git** : Version 2.25+ recommandée
-- **Debugger** : GDB ou LLDB pour le débogage
-
-### Installation des Dépendances
-
-**Ubuntu/Debian :**
-```bash
-sudo apt-get update
-sudo apt-get install build-essential libreadline-dev git valgrind
 ```
-
-**macOS :**
-```bash
-# Avec Homebrew
-brew install readline git
-# Valgrind n'est pas disponible sur macOS, utiliser leaks à la place
+Minishell/
+├── 📄 Makefile                    # Build configuration
+├── 📖 README.md                   # Project documentation
+├── 🚫 .gitignore                  # Git ignore rules
+├── 📂 Includes/
+│   └── 🔧 minishell.h            # Main header file
+├── 📂 srcs/                      # Source code directory
+│   ├── 🚀 main.c                 # Entry point
+│   ├── 📂 init/                  # Shell initialization
+│   │   ├── init_shell.c          # Shell setup
+│   │   └── init_env.c            # Environment setup
+│   ├── 📂 lexer/                 # Lexical analysis
+│   │   ├── tokenizer.c           # Token creation
+│   │   └── token_utils.c         # Token utilities
+│   ├── 📂 parser/                # Command parsing
+│   │   ├── parser.c              # Main parsing logic
+│   │   ├── syntax_check.c        # Syntax validation
+│   │   └── ast_builder.c         # AST construction
+│   ├── 📂 expander/              # Variable expansion
+│   │   ├── variable_expansion.c  # $VAR expansion
+│   │   └── quote_removal.c       # Quote processing
+│   ├── 📂 executor/              # Command execution
+│   │   ├── executor.c            # Main execution
+│   │   ├── pipe_handler.c        # Pipeline execution
+│   │   └── process_manager.c     # Process control
+│   ├── 📂 builtins/              # Built-in commands
+│   │   ├── builtin_echo.c        # echo command
+│   │   ├── builtin_cd.c          # cd command
+│   │   ├── builtin_pwd.c         # pwd command
+│   │   ├── builtin_export.c      # export command
+│   │   ├── builtin_unset.c       # unset command
+│   │   ├── builtin_env.c         # env command
+│   │   └── builtin_exit.c        # exit command
+│   ├── 📂 redirections/          # I/O redirections
+│   │   ├── input_redirect.c      # Input redirection
+│   │   └── output_redirect.c     # Output redirection
+│   ├── 📂 signals/               # Signal handling
+│   │   └── signal_handler.c      # Signal management
+│   ├── 📂 utils/                 # Utility functions
+│   │   ├── memory_utils.c        # Memory management
+│   │   ├── string_utils.c        # String operations
+│   │   └── error_handler.c       # Error handling
+│   └── 📂 bonus/                 # Bonus features
+│       ├── wildcards.c           # Wildcard expansion
+│       └── heredoc.c             # Here-document
+├── 📂 tests/                     # Test files
+│   ├── unit_tests/               # Unit tests
+│   ├── integration_tests/        # Integration tests
+│   └── test_runner.sh            # Test script
+├── 📂 docs/                      # Documentation
+│   ├── architecture.md           # System architecture
+│   └── api_reference.md          # API documentation
+└── 📂 scripts/                   # Utility scripts
+    ├── setup.sh                  # Environment setup
+    └── test_compliance.sh        # Compliance testing
 ```
 
 ## 🚀 Installation
 
-### Installation Standard
+### Prerequisites
 
 ```bash
-# 1. Cloner le repository
-git clone https://github.com/Yyunozor/minishell.git
+# macOS
+brew install readline
+
+# Ubuntu/Debian
+sudo apt-get install libreadline-dev
+
+# Arch Linux
+sudo pacman -S readline
+```
+
+### Build Process
+
+```bash
+# Clone the repository
+git clone https://github.com/username/minishell.git
 cd minishell
 
-# 2. Compiler le projet
+# Compile the project
 make
 
-# 3. Lancer le shell
+# Run the shell
 ./minishell
 ```
 
-### Commandes de Build
+### Compilation Options
 
 ```bash
-make          # Compilation standard
-make clean    # Supprime les fichiers objets
-make fclean   # Supprime tout (objets + exécutables)
-make re       # Recompilation complète (fclean + make)
-make bonus    # Compilation avec fonctionnalités bonus
-make debug    # Compilation avec symboles de debug (-g -fsanitize=address)
-make norm     # Vérification de la norme 42 avec norminette
+make                # Standard build
+make debug          # Debug build with -g flag
+make sanitize       # Build with address sanitizer
+make bonus          # Build with bonus features
+make clean          # Remove object files
+make fclean         # Remove all generated files
+make re             # Rebuild everything
 ```
 
-## 📖 Usage
+## 💻 Usage
 
-### Exemples Pratiques
+### Basic Commands
 
 ```bash
-# Commandes de base
+$ ./minishell
 minishell$ echo "Hello, World!"
 Hello, World!
 
 minishell$ pwd
-/Users/yyuno/Developer/42/Cursus/Minishell
+/Users/username/minishell
 
-# Pipes et redirections
-minishell$ ls -la | grep minishell | wc -l
-1
-
-minishell$ echo "Contenu du fichier" > test.txt
-minishell$ cat < test.txt
-Contenu du fichier
-
-# Variables d'environnement
-minishell$ export MY_VAR="42 School"
+minishell$ export MY_VAR="test"
 minishell$ echo $MY_VAR
-42 School
+test
 
-minishell$ unset MY_VAR
-minishell$ echo $MY_VAR
+minishell$ ls -la | grep minishell
+-rwxr-xr-x  1 user  staff  50432 Nov 15 10:30 minishell
+```
 
-# Heredoc
-minishell$ cat << EOF
-> Première ligne
-> Deuxième ligne
-> EOF
-Première ligne
-Deuxième ligne
+### Advanced Usage
 
-# Navigation
+```bash
+# Redirections
+minishell$ echo "Hello" > output.txt
+minishell$ cat < input.txt
+minishell$ ls >> log.txt
+
+# Pipes
+minishell$ ls -la | grep ".c" | wc -l
+
+# Environment variables
+minishell$ export PATH="/usr/local/bin:$PATH"
+minishell$ echo $USER
+
+# Built-in commands
 minishell$ cd /tmp
 minishell$ pwd
 /tmp
-
 minishell$ cd -
-/Users/yyuno/Developer/42/Cursus/Minishell
-
-# Quitter proprement
-minishell$ exit
+minishell$ exit 0
 ```
 
-## 🤝 Collaboration avec Git & GitHub
+## 🔄 Git Workflow for Collaboration
 
-### 🛠️ Configuration Initiale Git
-
-#### Configuration Personnelle
+### Repository Setup
 
 ```bash
-# Configuration globale (à faire une seule fois par développeur)
-git config --global user.name "Votre Nom Complet"
-git config --global user.email "votre.login@student.42.fr"
-git config --global init.defaultBranch main
-git config --global core.autocrlf input
-git config --global pull.rebase true
-git config --global core.editor "vim"  # ou "code" pour VSCode
+# Clone and setup
+git clone <repository-url>
+cd Minishell
+git config user.name "Your Name"
+git config user.email "your.email@example.com"
+
+# Add upstream (if forked)
+git remote add upstream <original-repo-url>
 ```
 
-#### Configuration Avancée
+### Feature Development Workflow
 
 ```bash
-# Aliases utiles pour l'équipe
-git config --global alias.co checkout
-git config --global alias.br branch
-git config --global alias.ci commit
-git config --global alias.st status
-git config --global alias.lg "log --oneline --graph --decorate --all"
-git config --global alias.unstage "reset HEAD --"
-git config --global alias.last "log -1 HEAD"
-```
+# 1. Create feature branch
+git checkout -b feature/component-name
+# Examples:
+# git checkout -b feature/lexer-tokenization
+# git checkout -b feature/pipe-execution
+# git checkout -b fix/memory-leak-parser
 
-### 🌳 Structure des Branches
+# 2. Work on your feature
+# Make changes, test, commit
 
-Notre projet suit le **Git Flow** adapté pour 42 :
-
-```
-main                    # Production (stable, prêt pour évaluation)
-├── develop            # Intégration (features terminées)
-├── feature/lexer      # Analyse lexicale
-├── feature/parser     # Analyse syntaxique  
-├── feature/executor   # Exécution des commandes
-├── feature/builtins   # Commandes intégrées
-├── feature/redirections # Gestion des redirections
-├── feature/signals    # Gestion des signaux
-├── hotfix/memory-leak # Corrections urgentes
-└── bonus/logical-ops  # Fonctionnalités bonus
-```
-
-### 📋 Workflow Git Complet pour l'Équipe
-
-#### 1. **Setup Initial du Projet**
-
-```bash
-# Le maintainer du projet fait :
-git clone https://github.com/Yyunozor/minishell.git
-cd minishell
-git checkout -b develop
-git push -u origin develop
-
-# Chaque membre de l'équipe fait :
-git clone https://github.com/Yyunozor/minishell.git
-cd minishell
-git checkout develop
-git pull origin develop
-```
-
-#### 2. **Créer et Travailler sur une Feature**
-
-```bash
-# 1. S'assurer d'être sur develop et à jour
-git checkout develop
-git pull origin develop
-
-# 2. Créer une branche pour votre feature
-git checkout -b feature/nom-descriptif-de-votre-feature
-
-# 3. Développer (cycle itératif)
-# ... coder ...
+# 3. Commit with conventional format
 git add .
-git commit -m "feat(lexer): add basic token recognition"
+git commit -m "feat(lexer): implement token classification"
+git commit -m "fix(parser): resolve memory leak in AST creation"
+git commit -m "docs: update API documentation"
 
-# ... coder plus ...
-git add src/lexer/token_utils.c
-git commit -m "feat(lexer): implement token validation"
-
-# 4. Pousser régulièrement pour backup
-git push -u origin feature/nom-descriptif-de-votre-feature
+# 4. Push and create PR
+git push origin feature/component-name
+# Create PR on GitHub
 ```
 
-#### 3. **Conventions de Commits (Obligatoires)**
-
-Nous utilisons **Conventional Commits** pour la lisibilité :
+### Daily Sync Routine
 
 ```bash
-# Format : type(scope): description courte
-#
-# Types obligatoires :
-git commit -m "feat(parser): implement command parsing"      # Nouvelle fonctionnalité
-git commit -m "fix(builtins): resolve cd absolute path bug" # Correction de bug
-git commit -m "docs(readme): update installation guide"     # Documentation
-git commit -m "test(executor): add process creation tests"  # Tests
-git commit -m "refactor(lexer): optimize token allocation"  # Refactorisation
-git commit -m "style(all): fix norminette violations"       # Style/norme
-git commit -m "chore(makefile): update compiler flags"      # Maintenance
+# Morning routine
+git checkout main
+git pull upstream main        # If using fork
+git pull origin main         # If direct access
+git checkout feature/your-branch
+git rebase main              # or merge main
 
-# Scopes recommandés :
-# lexer, parser, executor, builtins, signals, redirections, memory, tests, docs
+# Before pushing
+make && make test            # Ensure it builds and passes tests
+git push origin feature/your-branch
 ```
 
-#### 4. **Pull Requests (Process Obligatoire)**
+### Commit Convention
 
-Avant de merger une feature, **toujours** créer une Pull Request :
+```
+<type>(<scope>): <description>
+
+[optional body]
+
+[optional footer]
+```
+
+**Types:**
+
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation
+- `style`: Code style/formatting
+- `refactor`: Code refactoring
+- `test`: Tests
+- `chore`: Maintenance
+
+**Examples:**
 
 ```bash
-# 1. Finaliser votre feature
-git checkout feature/ma-feature
-git add .
-git commit -m "feat(scope): finalize feature implementation"
-
-# 2. Rebaser sur develop pour éviter les conflits
-git checkout develop
-git pull origin develop
-git checkout feature/ma-feature
-git rebase develop
-
-# 3. Résoudre les conflits éventuels puis push
-git push origin feature/ma-feature
-
-# 4. Créer la PR sur GitHub avec le template
+git commit -m "feat(executor): add pipeline execution support"
+git commit -m "fix(signals): handle SIGINT during command execution"
+git commit -m "refactor(parser): simplify AST node creation"
+git commit -m "test(builtins): add comprehensive echo command tests"
 ```
 
-**Template de Pull Request Obligatoire :**
-
-```markdown
-## 📋 Description
-
-Brève description de ce que fait cette PR.
-
-## 🔄 Type de changement
-
-- [ ] 🐛 Bug fix (correction non-breaking)
-- [ ] ✨ New feature (fonctionnalité non-breaking)
-- [ ] 💥 Breaking change (correction ou feature qui casserait l'existant)
-- [ ] 📚 Documentation update
-
-## ✅ Checklist Qualité
-
-- [ ] ✅ Code compile sans warnings avec -Wall -Wextra -Werror
-- [ ] ✅ Norminette passe sans erreurs
-- [ ] ✅ Pas de fuites mémoire (testé avec valgrind/leaks)
-- [ ] ✅ Tests manuels effectués
-- [ ] ✅ Code review interne fait
-- [ ] ✅ Documentation mise à jour si nécessaire
-
-## 🧪 Comment tester
+### Advanced Git Operations
 
 ```bash
-# Instructions précises pour tester les changements
-make && ./minishell
-# Puis tester : commande_specifique
-```
+# Interactive rebase (clean up commits)
+git rebase -i HEAD~3
 
-## 📸 Screenshots/Exemples
+# Squash commits
+git reset --soft HEAD~3
+git commit -m "feat(parser): complete parsing implementation"
 
-Si applicable, ajouter des exemples d'utilisation.
+# Cherry-pick specific commits
+git cherry-pick <commit-hash>
 
-## 🔗 Issues liées
-
-Closes #[numéro_issue]
-```
-
-#### 5. **Résolution de Conflits (Guide Pratique)**
-
-```bash
-# Quand vous avez des conflits lors d'un rebase/merge :
-
-# 1. Voir les fichiers en conflit
+# Resolve conflicts
 git status
-
-# 2. Pour chaque fichier en conflit, éditer et résoudre
-# Chercher et résoudre les marqueurs :
-# <<<<<<< HEAD
-# votre code
-# =======
-# code de l'autre branche  
-# >>>>>>> feature/autre-branch
-
-# 3. Après résolution, marquer comme résolu
-git add fichier_resolu.c
-
-# 4. Continuer le rebase
+# Edit conflicted files
+git add .
 git rebase --continue
 
-# 5. Si trop compliqué, annuler et demander de l'aide
-git rebase --abort
+# Stash management
+git stash push -m "WIP: working on lexer"
+git stash list
+git stash pop stash@{0}
 ```
 
-### 🔍 Commandes Git Essentielles pour l'Équipe
-
-#### Inspection et Historique
+### GitHub CLI Integration
 
 ```bash
-# Voir l'état actuel
-git status                    # État des fichiers
-git log --oneline --graph     # Historique visuel
-git log --author="Nom"        # Commits d'un auteur
-git show HEAD                 # Dernier commit détaillé
+# Install gh CLI
+brew install gh              # macOS
+sudo apt install gh         # Ubuntu
 
-# Voir les différences
-git diff                      # Changements non stagés
-git diff --staged             # Changements stagés
-git diff develop..feature/ma-branch  # Différences entre branches
+# Authenticate
+gh auth login
+
+# Create PR with template
+gh pr create --title "feat: implement lexer" \
+             --body "Implements tokenization with proper error handling"
+
+# Review PRs
+gh pr list
+gh pr view 123
+gh pr checkout 123
+gh pr merge 123 --squash
+
+# Issues management
+gh issue create --title "Memory leak in parser" \
+                --body "Valgrind shows leak in parse_command function"
+gh issue list --assignee @me
 ```
 
-#### Annulation et Correction
+## 🛠️ Development Guidelines
+
+### Code Standards
+
+- **42 Norm Compliance**: Strict adherence to 42 coding standards
+- **Function Length**: Maximum 25 lines per function
+- **File Organization**: Maximum 5 functions per file
+- **Variable Naming**: Descriptive names, no single letters except counters
+- **Memory Management**: Always free allocated memory, check for leaks
+
+### Error Handling
+
+```c
+// Example error handling pattern
+if (!(data = malloc(sizeof(t_data))))
+{
+    ft_putendl_fd("minishell: malloc error", STDERR_FILENO);
+    return (ERROR);
+}
+```
+
+### Memory Management Checklist
+
+- [ ] All `malloc` calls have corresponding `free`
+- [ ] Check return values of system calls
+- [ ] Handle edge cases (empty input, invalid commands)
+- [ ] Use `valgrind` for leak detection
+- [ ] Implement proper cleanup on exit
+
+### Testing Strategy
+
+1. **Unit Tests**: Test individual functions
+2. **Integration Tests**: Test component interactions
+3. **Comparison Tests**: Compare output with bash
+4. **Edge Case Tests**: Empty input, invalid syntax, large inputs
+5. **Memory Tests**: Check for leaks and invalid access
+
+## 🧪 Testing
+
+### Manual Testing
 
 ```bash
-# Annuler des modifications
-git checkout -- fichier.c           # Annuler modifs non commitées
-git reset HEAD fichier.c            # Unstage un fichier
-git reset --soft HEAD~1             # Annuler dernier commit (garde changes)
-git reset --hard HEAD~1             # Annuler dernier commit + changes
+# Basic functionality
+./minishell
+> echo "test"
+> pwd
+> cd /tmp
+> env | grep USER
+> export TEST=123
+> echo $TEST
+> ls | wc -l
+> cat < /etc/passwd | head -5
+> exit
 
-# Corriger le dernier commit
-git commit --amend -m "nouveau message"
+# Edge cases
+> echo ""
+> cd
+> cd /nonexistent
+> export =value
+> $INVALID_VAR
+> ls |
+> > output.txt
 ```
 
-#### Stash (Sauvegarde Temporaire)
+### Automated Testing
 
 ```bash
-# Sauvegarder temporairement des changements
-git stash                            # Sauvegarder
-git stash push -m "description"      # Sauvegarder avec message
-git stash list                       # Voir les stashes
-git stash pop                        # Récupérer dernier stash
-git stash apply stash@{0}            # Appliquer un stash spécifique
-git stash drop stash@{0}             # Supprimer un stash
-```
-
-#### Gestion des Branches
-
-```bash
-# Branches locales et distantes
-git branch -a                       # Voir toutes les branches
-git branch -d feature/old            # Supprimer branche locale
-git push origin --delete feature/old # Supprimer branche distante
-
-# Synchronisation
-git fetch origin                     # Récupérer infos sans merger
-git pull origin develop             # Récupérer + merger develop
-git push origin ma-branch           # Pousser ma branche
-```
-
-### 📱 GitHub : Issues et Project Management
-
-#### Créer des Issues Structurées
-
-```markdown
-**Template d'Issue Bug Report :**
----
-## 🐛 Bug Report
-
-### 📝 Description
-Description claire et concise du bug.
-
-### 🔄 Steps to Reproduce
-1. Lancer `./minishell`
-2. Exécuter `commande problématique`
-3. Observer le comportement incorrect
-
-### ✅ Expected Behavior
-[Comportement attendu]
-
-### ❌ Actual Behavior  
-[Comportement observé]
-
-### 🖥️ Environment
-- **OS:** [macOS 12.6 / Ubuntu 20.04]
-- **Compiler:** [gcc 9.4.0 / clang 13.0.0]
-- **Branch:** [develop / feature/xyz]
-- **Commit:** [hash du commit]
-
-### 📋 Additional Context
-Informations supplémentaires, screenshots, logs...
-
-### 🏷️ Labels
-`bug`, `priority:high`, `help wanted`
-```
-
-```markdown
-**Template d'Issue Feature Request :**
----
-## 🚀 Feature Request
-
-### 📝 Description
-Description de la fonctionnalité demandée.
-
-### 💡 Motivation
-Pourquoi cette feature est-elle nécessaire ?
-
-### 📋 Detailed Description
-Description technique détaillée.
-
-### ✅ Acceptance Criteria
-- [ ] Critère 1
-- [ ] Critère 2
-- [ ] Tests passent
-
-### 🏷️ Labels
-`enhancement`, `feature`, `good first issue`
-```
-
-#### Utilisation des Labels GitHub
-
-| Label | Description | Couleur |
-|-------|-------------|---------|
-| `bug` | Bug confirmé | #d73a4a |
-| `enhancement` | Nouvelle fonctionnalité | #a2eeef |
-| `documentation` | Documentation | #0075ca |
-| `good first issue` | Bon pour débuter | #7057ff |
-| `help wanted` | Aide externe bienvenue | #008672 |
-| `priority:high` | Priorité haute | #b60205 |
-| `priority:medium` | Priorité moyenne | #fbca04 |
-| `priority:low` | Priorité basse | #0e8a16 |
-
-## 🏗️ Architecture
-
-### Structure des Répertoires
-
-```text
-minishell/
-├── 📁 includes/                    # Headers publics
-│   └── minishell.h                # Header principal
-├── 📁 libft/                      # Bibliothèque personnalisée
-│   ├── includes/ft_libft.h        # Header libft
-│   └── srcs/                      # Sources libft
-│       ├── ft_string/             # Fonctions string
-│       ├── ft_memory/             # Gestion mémoire
-│       └── ft_list/               # Listes chaînées
-├── 📁 srcs/                       # Code source principal
-│   ├── main.c                     # Point d'entrée
-│   ├── 📁 lexer/                  # Analyse lexicale
-│   │   ├── lexer.c               # Tokenisation
-│   │   ├── token_utils.c         # Utilitaires tokens
-│   │   └── lexer.h               # Header lexer
-│   ├── 📁 parser/                 # Analyse syntaxique
-│   │   ├── parser.c              # AST construction
-│   │   ├── ast_utils.c           # Utilitaires AST
-│   │   └── parser.h              # Header parser
-│   ├── 📁 expander/               # Expansion variables
-│   │   ├── expander.c            # Expansion $VAR
-│   │   ├── quote_handler.c       # Gestion quotes
-│   │   └── expander.h            # Header expander
-│   ├── 📁 executor/               # Exécution commandes
-│   │   ├── executor.c            # Exécution principale
-│   │   ├── process_manager.c     # Gestion processus
-│   │   └── executor.h            # Header executor
-│   ├── 📁 redirections/           # Redirections I/O
-│   │   ├── redirect.c            # Redirections
-│   │   ├── heredoc.c             # Here documents
-│   │   └── redirect.h            # Header redirections
-│   ├── 📁 builtins/               # Commandes intégrées
-│   │   ├── cd.c                  # Commande cd
-│   │   ├── echo.c                # Commande echo
-│   │   ├── pwd.c                 # Commande pwd
-│   │   ├── export.c              # Commande export
-│   │   ├── unset.c               # Commande unset
-│   │   ├── env.c                 # Commande env
-│   │   ├── exit.c                # Commande exit
-│   │   └── builtins.h            # Header builtins
-│   ├── 📁 signals/                # Gestion signaux
-│   │   ├── signals.c             # Handlers signaux
-│   │   └── signals.h             # Header signaux
-│   ├── 📁 utils/                  # Utilitaires généraux
-│   │   ├── error_handler.c       # Gestion erreurs
-│   │   ├── memory_manager.c      # Gestion mémoire
-│   │   └── utils.h               # Header utils
-│   └── 📁 bonus/                  # Fonctionnalités bonus
-│       ├── logical_ops.c         # Opérateurs && ||
-│       ├── globbing.c            # Wildcards *
-│       └── bonus.h               # Header bonus
-├── 📁 tests/                      # Tests
-│   ├── 📁 unit/                  # Tests unitaires
-│   ├── 📁 integration/           # Tests intégration
-│   ├── 📁 mandatory/             # Tests fonctionnalités obligatoires
-│   ├── 📁 bonus/                 # Tests fonctionnalités bonus
-│   └── run_tests.sh              # Script de tests
-├── 📁 scripts/                    # Scripts utilitaires
-│   ├── build.sh                  # Script build
-│   ├── clean.sh                  # Script nettoyage
-│   └── check_norm.sh             # Vérification norminette
-├── 📁 docs/                       # Documentation
-│   ├── design.md                 # Document design
-│   ├── api.md                    # Documentation API
-│   └── troubleshooting.md        # Guide dépannage
-├── 📁 .github/                    # Configuration GitHub
-│   ├── workflows/ci.yml          # CI/CD
-│   ├── ISSUE_TEMPLATE/           # Templates issues
-│   └── pull_request_template.md  # Template PR
-├── 📄 Makefile                    # Instructions build
-├── 📄 .gitignore                  # Fichiers ignorés
-├── 📄 .norminette                 # Configuration norminette
-└── 📄 README.md                   # Ce fichier
-```
-
-## 🧪 Tests
-
-### Tests Manuels Basiques
-
-```bash
-# Tests de base
-echo "Hello World"
-echo 'Single quotes test'
-echo "Double quotes with $USER"
-pwd
-cd /tmp && pwd
-cd - && pwd
-
-# Tests pipes
-ls | grep minishell
-cat /etc/passwd | head -5 | tail -2
-
-# Tests redirections
-echo "test" > file.txt
-cat < file.txt
-echo "append" >> file.txt
-cat file.txt
-
-# Tests variables
-export TEST_VAR="42"
-echo $TEST_VAR
-unset TEST_VAR
-echo $TEST_VAR
-
-# Tests signaux (Ctrl+C, Ctrl+\, Ctrl+D)
-```
-
-### Tests Automatisés
-
-```bash
-# Lancer tous les tests
+# Run test suite
 make test
 
-# Tests spécifiques
-./tests/run_tests.sh mandatory
-./tests/run_tests.sh bonus
-./tests/run_tests.sh memory  # Tests de fuites mémoire
+# Specific tests
+./tests/test_runner.sh lexer
+./tests/test_runner.sh parser
+./tests/test_runner.sh executor
+
+# Memory testing
+make sanitize
+valgrind --leak-check=full ./minishell
 ```
 
-## 🔄 Workflow de Développement
+### Comparison with Bash
 
-### Processus de Review de Code
+```bash
+# Create test script
+echo 'echo "Hello World"' > test_cmd.sh
+echo 'ls | wc -l' >> test_cmd.sh
 
-1. **Self-Review** : Vérifier son code avant PR
-2. **Peer Review** : Au moins 1 approbation requise
-3. **Testing** : Tests manuels + automatisés
-4. **Merge** : Squash commits si nécessaire
+# Test with bash
+bash < test_cmd.sh > bash_output.txt
 
-### Checklist Avant Merge
+# Test with minishell
+./minishell < test_cmd.sh > minishell_output.txt
 
-- [ ] ✅ Norminette OK
-- [ ] ✅ Compilation sans warnings
-- [ ] ✅ Tests passent
-- [ ] ✅ Pas de fuites mémoire
-- [ ] ✅ Documentation mise à jour
-- [ ] ✅ Code review fait
+# Compare outputs
+diff bash_output.txt minishell_output.txt
+```
 
-## 📚 Documentation
+## 🐛 Troubleshooting
 
-### Resources Utiles
+### Common Issues
+
+**Compilation Errors:**
+
+```bash
+# Readline not found
+brew install readline
+export CPPFLAGS="-I/usr/local/opt/readline/include"
+export LDFLAGS="-L/usr/local/opt/readline/lib"
+
+# Permission denied
+chmod +x minishell
+```
+
+**Runtime Issues:**
+
+```bash
+# Command not found
+echo $PATH
+export PATH="/usr/bin:/bin:$PATH"
+
+# Segmentation fault
+gdb ./minishell
+(gdb) run
+(gdb) bt
+```
+
+**Memory Leaks:**
+
+```bash
+valgrind --leak-check=full --show-leak-kinds=all ./minishell
+```
+
+### Debug Mode
+
+```bash
+make debug
+gdb ./minishell
+(gdb) set args
+(gdb) break main
+(gdb) run
+(gdb) step
+```
+
+## 🤝 Contributing
+
+### Code Review Checklist
+
+- [ ] Code follows 42 Norm
+- [ ] No memory leaks detected
+- [ ] All tests pass
+- [ ] Documentation updated
+- [ ] Commit messages follow convention
+- [ ] No debug code left in production
+
+### Pull Request Template
+
+```markdown
+## Description
+Brief description of changes
+
+## Type of Change
+- [ ] Bug fix
+- [ ] New feature
+- [ ] Documentation update
+- [ ] Refactoring
+
+## Testing
+- [ ] Unit tests pass
+- [ ] Integration tests pass
+- [ ] Manual testing completed
+- [ ] No memory leaks
+
+## Checklist
+- [ ] Code follows 42 Norm
+- [ ] Self-review completed
+- [ ] Documentation updated
+```
+
+## 📚 Resources
+
+### Documentation
 
 - [Bash Manual](https://www.gnu.org/software/bash/manual/bash.html)
 - [POSIX Shell Specification](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/sh.html)
-- [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/)
-- [Conventional Commits](https://www.conventionalcommits.org/)
+- [GNU Readline](https://tiswww.case.edu/php/chet/readline/rltop.html)
 
-## 🛠️ Dépannage
+### System Programming
 
-### Problèmes Courants
+- [Advanced Programming in UNIX Environment](https://www.apuebook.com/)
+- [The Linux Programming Interface](https://man7.org/tlpi/)
+- [Beej's Guide to Unix IPC](https://beej.us/guide/bgipc/)
 
-**Compilation échoue :**
-```bash
-# Vérifier les dépendances
-make fclean && make
+### 42 School Resources
 
-# Sur macOS avec Homebrew
-export LDFLAGS="-L/opt/homebrew/lib"
-export CPPFLAGS="-I/opt/homebrew/include"
-```
+- [42 Norm](https://github.com/42School/norminette)
+- [42 Intra Projects](https://projects.intra.42.fr/)
+- [42 Slack Community](https://42born2code.slack.com/)
 
-**Conflits Git :**
-```bash
-# Voir les conflits
-git status
+### Tools & Debugging
 
-# Annuler et recommencer
-git merge --abort
-git rebase --abort
-```
-
-**Fuites mémoire :**
-```bash
-# Linux
-valgrind --leak-check=full ./minishell
-
-# macOS
-leaks -atExit -- ./minishell
-```
-
-## 👥 Équipe
-
-### Contributeurs
-
-- **[@Yyunozor](https://github.com/Yyunozor)** - Lead Developer
-- **[@VotrePartenaire](https://github.com/VotrePartenaire)** - Co-Developer
-
-### Responsabilités
-
-| Développeur | Modules Principaux | Responsabilités |
-|-------------|-------------------|-----------------|
-| **Yyunozor** | Lexer, Parser, Architecture | Architecture générale, Review de code |
-| **Partenaire** | Executor, Builtins, Tests | Implémentation features, Testing |
+- [Valgrind Documentation](https://valgrind.org/docs/manual/)
+- [GDB Tutorial](https://www.gdbtutorial.com/)
+- [Git Documentation](https://git-scm.com/doc)
 
 ---
 
-<div align="center">
+## 👥 Authors
 
-**Made with ❤️ for 42 School**
+- **[Your Name]** - *Initial development* - [GitHub](https://github.com/yourusername)
+- **[Teammate Name]** - *Core features* - [GitHub](https://github.com/teammate)
 
-[⬆ Retour en haut](#-minishell)
+## 📄 License
 
-</div>
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- 42 School for the project specifications
+- The open-source community for tools and libraries
+- Fellow students for collaboration and support
+
+---
+
+*Made with ❤️ at 42 School*
