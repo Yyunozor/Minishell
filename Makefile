@@ -6,7 +6,7 @@
 #    By: anpayot <anpayot@student.42lausanne.ch>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/24 13:42:56 by anpayot           #+#    #+#              #
-#    Updated: 2025/06/28 17:04:31 by anpayot          ###   ########.fr        #
+#    Updated: 2025/06/28 19:14:03 by anpayot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,64 +67,11 @@ endif
 # Source files
 MAIN_SRC = main.c
 
-INIT_SRC = init/init_shell.c \
-           init/init_env.c
-
-LEXER_SRC = lexer/tokenizer.c \
-            lexer/token_utils.c \
-            lexer/token_validation.c
-
-PARSER_SRC = parser/parser.c \
-             parser/syntax_check.c \
-             parser/ast_builder.c \
-             parser/command_parser.c
-
-EXPANDER_SRC = expander/variable_expansion.c \
-               expander/quote_removal.c \
-               expander/wildcard_expansion.c
-
-EXECUTOR_SRC = executor/executor.c \
-               executor/pipe_handler.c \
-               executor/process_manager.c \
-               executor/command_executor.c
-
-BUILTINS_SRC = builtins/builtin_echo.c \
-               builtins/builtin_cd.c \
-               builtins/builtin_pwd.c \
-               builtins/builtin_export.c \
-               builtins/builtin_unset.c \
-               builtins/builtin_env.c \
-               builtins/builtin_exit.c \
-               builtins/builtin_utils.c
-
-REDIRECTIONS_SRC = redirections/input_redirect.c \
-                   redirections/output_redirect.c \
-                   redirections/here_document.c
-
-SIGNALS_SRC = signals/signal_handler.c \
-              signals/signal_utils.c
-
-UTILS_SRC = utils/memory_utils.c \
-            utils/string_utils.c \
-            utils/error_handler.c \
-            utils/env_utils.c \
-            utils/path_utils.c
-
-BONUS_SRC = bonus/wildcards.c \
-            bonus/heredoc.c \
-            bonus/logical_operators.c
-
 # All source files
-SRCS = $(MAIN_SRC) $(INIT_SRC) $(LEXER_SRC) $(PARSER_SRC) $(EXPANDER_SRC) \
-       $(EXECUTOR_SRC) $(BUILTINS_SRC) $(REDIRECTIONS_SRC) $(SIGNALS_SRC) \
-       $(UTILS_SRC)
-
-# Bonus source files
-BONUS_SRCS = $(SRCS) $(BONUS_SRC)
+SRCS = $(MAIN_SRC)
 
 # Object files
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
-BONUS_OBJS = $(BONUS_SRCS:%.c=$(OBJ_DIR)/%.o)
 
 # Test files
 TEST_SRCS = $(wildcard $(TEST_DIR)/*.c)
@@ -153,12 +100,6 @@ $(NAME): $(OBJS)
 	@echo "$(CYAN)Linking $(NAME)...$(RESET)"
 	@$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)
 	@echo "$(GREEN)✓ $(NAME) compiled successfully!$(RESET)"
-
-# Bonus target
-bonus: $(BONUS_OBJS)
-	@echo "$(CYAN)Linking $(NAME) with bonus features...$(RESET)"
-	@$(CC) $(CFLAGS) $(BONUS_OBJS) $(LDFLAGS) -o $(NAME)
-	@echo "$(GREEN)✓ $(NAME) with bonus compiled successfully!$(RESET)"
 
 # Object file compilation
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
