@@ -135,7 +135,7 @@ Minishell/
 ├── 📄 Makefile                    # Build configuration
 ├── 📖 README.md                   # Project documentation  
 ├── 🚫 .gitignore                  # Git ignore rules
-├── 📂 Includes/
+├── 📂 includes/
 │   └── 🔧 minishell.h            # Main header file
 ├── 📂 srcs/                      # Source code directory
 │   ├── 🚀 main.c                 # Entry point

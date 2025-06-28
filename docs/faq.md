@@ -556,7 +556,7 @@ pip3 install norminette
 make norm
 
 # Or manually
-norminette srcs/ Includes/
+norminette srcs/ includes/
 ```
 
 ### Q: What about the 42 project requirements?
