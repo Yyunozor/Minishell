@@ -51,17 +51,6 @@
 - **Parser Design**: Lexical analysis and Abstract Syntax Tree construction
 - **Systems Programming**: Low-level Unix/Linux system integration
 
-## ✨ Key Highlights
-
-| Feature | Description | Status |
-|---------|-------------|--------|
-| 🔧 **Complete Shell** | Full-featured command interpreter | ✅ Ready |
-| 🚀 **Performance** | Efficient memory management and process handling | ✅ Optimized |
-| 🛡️ **Memory Safe** | Zero memory leaks, validated with Valgrind | ✅ Verified |
-| 📋 **42 Norm** | Strict adherence to coding standards | ✅ Compliant |
-| 🧪 **Tested** | Comprehensive test suite with 95%+ coverage | ✅ Validated |
-| 📚 **Documented** | Professional-grade documentation | ✅ Complete |
-
 ## 🚀 Quick Start
 
 ### One-line Installation
