@@ -1,283 +1,191 @@
-# 🌊 Git Workflow Guide for Minishell
+# 🔄 Workflow Git
 
-## 🎯 Quick Reference
+## 🎯 Workflow de base
 
-### Essential Commands
+### Configuration initiale
 ```bash
-# Check current status
-git status
-git branch -v
+# Configurer Git
+git config --global user.name "Votre Nom"
+git config --global user.email "votre.email@example.com"
 
-# Update dev branch from main
-git checkout dev
-git pull origin main
+# Cloner le projet
+git clone <url-du-repo>
+cd Minishell
+```
 
-# Create and switch to feature branch
-git checkout -b feature/new-feature
+### Workflow de développement
 
-# Stage, commit, and push changes
+#### 1. Créer une branche pour une fonctionnalité
+```bash
+# Créer et basculer sur une nouvelle branche
+git checkout -b feature/nom-fonctionnalite
+
+# Exemples :
+git checkout -b feature/lexer-implementation
+git checkout -b feature/pipe-execution
+git checkout -b fix/memory-leak
+```
+
+#### 2. Développer et tester
+```bash
+# Développer votre fonctionnalité
+# Tester avec make et valgrind
+make && valgrind --leak-check=full ./minishell
+
+# Vérifier la norme
+norminette srcs/ includes/
+```
+
+#### 3. Commiter les changements
+```bash
+# Ajouter les fichiers modifiés
 git add .
-git commit -m "feat: add new feature description"
-git push origin feature/new-feature
 
-# Merge feature back to dev
-git checkout dev
-git merge feature/new-feature
-git push origin dev
+# Commiter avec un message descriptif
+git commit -m "feat(lexer): implement token classification"
 
-# Clean up feature branch
-git branch -d feature/new-feature
-git push origin --delete feature/new-feature
+# Autres exemples :
+git commit -m "fix(parser): resolve memory leak in AST creation"
+git commit -m "docs: update README with new features"
 ```
 
-## 🏗️ Branch Strategy
-
-### Main Branches
-- **`main`** - Production-ready code, stable releases
-- **`dev`** - Development integration branch
-- **`feature/*`** - Individual feature development
-
-### Branch Naming Convention
+#### 4. Pousser et créer une PR
 ```bash
-feature/parser-improvements     # New features
-bugfix/memory-leak-fix         # Bug fixes
-hotfix/critical-security-fix   # Critical fixes
-docs/api-documentation         # Documentation updates
-refactor/executor-cleanup      # Code refactoring
+# Pousser la branche
+git push origin feature/nom-fonctionnalite
+
+# Créer une Pull Request sur GitHub
+# Demander une review
 ```
 
-## 🔄 Common Workflows
+### Convention de nommage des commits
 
-### 1. Start New Feature
-```bash
-# Ensure you're on latest dev
-git checkout dev
-git pull origin main
+#### Format
+```
+<type>(<scope>): <description>
 
-# Create feature branch
-git checkout -b feature/your-feature-name
-
-# Work on your feature...
-# Make commits with descriptive messages
-
-# Push feature branch
-git push -u origin feature/your-feature-name
+[optional body]
 ```
 
-### 2. Update Dev Branch from Main
+#### Types
+- **feat** : Nouvelle fonctionnalité
+- **fix** : Correction de bug
+- **docs** : Documentation
+- **style** : Formatage du code
+- **refactor** : Refactoring
+- **test** : Tests
+- **chore** : Maintenance
+
+#### Exemples
 ```bash
-# Switch to dev branch
-git checkout dev
-
-# Pull latest changes from main
-git pull origin main
-
-# Push updated dev branch
-git push origin dev
+git commit -m "feat(executor): add pipeline execution support"
+git commit -m "fix(signals): handle SIGINT during command execution"
+git commit -m "refactor(parser): simplify AST node creation"
+git commit -m "test(builtins): add comprehensive echo command tests"
 ```
 
-### 3. Merge Feature to Dev
+## 🔄 Workflow collaboratif
+
+### Synchronisation avec la branche principale
 ```bash
-# Switch to dev branch
-git checkout dev
-
-# Merge your feature
-git merge feature/your-feature-name
-
-# Push updated dev
-git push origin dev
-
-# Delete local feature branch
-git branch -d feature/your-feature-name
-
-# Delete remote feature branch
-git push origin --delete feature/your-feature-name
-```
-
-### 4. Release to Main
-```bash
-# Switch to main
+# Récupérer les derniers changements
 git checkout main
+git pull origin main
 
-# Merge stable dev changes
-git merge dev
+# Revenir sur votre branche
+git checkout feature/votre-branche
 
-# Tag the release
-git tag -a v1.0.0 -m "Release version 1.0.0"
+# Rebaser sur main (optionnel)
+git rebase main
+```
 
-# Push everything
-git push origin main
+### Résolution de conflits
+```bash
+# En cas de conflit lors du rebase
+git status              # Voir les fichiers en conflit
+# Éditer les fichiers pour résoudre les conflits
+git add .               # Ajouter les fichiers résolus
+git rebase --continue   # Continuer le rebase
+```
+
+## 🏷️ Gestion des versions
+
+### Tags pour les versions
+```bash
+# Créer un tag pour une version
+git tag -a v1.0.0 -m "Version 1.0.0 - Fonctionnalités de base"
+
+# Pousser les tags
 git push origin --tags
 ```
 
-## 🚨 Conflict Resolution
+### Branches importantes
+- **main** : Branche stable
+- **develop** : Branche de développement
+- **feature/** : Branches de fonctionnalités
+- **fix/** : Branches de correction
+- **hotfix/** : Corrections urgentes
 
-### If you encounter merge conflicts:
+## 🔍 Commandes utiles
+
+### Vérification et inspection
 ```bash
-# View conflicted files
+# Voir l'état des fichiers
 git status
 
-# Edit files to resolve conflicts
-# Look for <<<<<<< HEAD markers
+# Voir l'historique des commits
+git log --oneline
 
-# Mark conflicts as resolved
-git add .
+# Voir les différences
+git diff
 
-# Complete the merge
-git commit -m "fix: resolve merge conflicts"
-```
-
-### Common Conflict Patterns
-```bash
-<<<<<<< HEAD
-// Your changes
-=======
-// Incoming changes
->>>>>>> branch-name
-```
-
-## 🧹 Branch Cleanup
-
-### Delete Local Branches
-```bash
-# List all branches
+# Voir les branches
 git branch -a
-
-# Delete merged feature branch
-git branch -d feature/completed-feature
-
-# Force delete unmerged branch (careful!)
-git branch -D feature/abandoned-feature
 ```
 
-### Delete Remote Branches
+### Nettoyage
 ```bash
-# Delete remote branch
-git push origin --delete feature/old-feature
+# Nettoyer les branches locales fusionnées
+git branch --merged | grep -v "\*\|main\|develop" | xargs -n 1 git branch -d
 
-# Prune deleted remote branches from local
+# Nettoyer les références des branches supprimées
 git remote prune origin
 ```
 
-### Clean Up Tracking Branches
+## 📋 Checklist avant commit
+
+- [ ] Le code compile sans erreur (`make`)
+- [ ] Aucune fuite mémoire (`valgrind`)
+- [ ] Respect de la norme 42 (`norminette`)
+- [ ] Tests manuels effectués
+- [ ] Message de commit descriptif
+- [ ] Fichiers appropriés ajoutés (pas de fichiers temporaires)
+
+## 🚨 Cas d'urgence
+
+### Annuler le dernier commit (local)
 ```bash
-# See remote tracking status
-git branch -vv
-
-# Remove tracking for deleted remote branches
-git branch --unset-upstream
-```
-
-## 📝 Commit Message Best Practices
-
-### Format
-```
-type(scope): description
-
-[optional body]
-
-[optional footer]
-```
-
-### Types
-- **feat**: New feature
-- **fix**: Bug fix
-- **docs**: Documentation changes
-- **style**: Code style changes (formatting, etc.)
-- **refactor**: Code refactoring
-- **test**: Adding/updating tests
-- **chore**: Maintenance tasks
-
-### Examples
-```bash
-git commit -m "feat(parser): add support for quoted arguments"
-git commit -m "fix(executor): resolve memory leak in pipe handling"
-git commit -m "docs: update API reference with new functions"
-git commit -m "refactor(lexer): simplify token parsing logic"
-```
-
-## 🔍 Useful Git Commands
-
-### Check History
-```bash
-# View commit history
-git log --oneline --graph --all
-
-# View changes in specific commit
-git show <commit-hash>
-
-# View file history
-git log --follow -- path/to/file
-```
-
-### Compare Changes
-```bash
-# Compare working directory with staging
-git diff
-
-# Compare staging with last commit
-git diff --cached
-
-# Compare two branches
-git diff main..dev
-```
-
-### Undo Changes
-```bash
-# Undo working directory changes
-git checkout -- file.c
-
-# Unstage file
-git reset HEAD file.c
-
-# Undo last commit (keep changes)
+# Garder les modifications
 git reset --soft HEAD~1
 
-# Undo last commit (discard changes)
+# Supprimer les modifications
 git reset --hard HEAD~1
 ```
 
-## 🚀 Advanced Workflows
-
-### Rebase Instead of Merge
+### Revenir à un commit spécifique
 ```bash
-# Rebase feature branch onto dev
-git checkout feature/your-feature
-git rebase dev
+# Voir l'historique
+git log --oneline
 
-# Interactive rebase to clean up commits
-git rebase -i HEAD~3
+# Revenir à un commit (attention : destructif)
+git reset --hard <hash-du-commit>
 ```
 
-### Cherry-pick Commits
+### Stash (sauvegarder temporairement)
 ```bash
-# Apply specific commit from another branch
-git cherry-pick <commit-hash>
-```
+# Sauvegarder les modifications en cours
+git stash
 
-### Stash Work in Progress
-```bash
-# Stash current changes
-git stash push -m "work in progress on feature X"
-
-# List stashes
-git stash list
-
-# Apply latest stash
+# Récupérer les modifications
 git stash pop
-
-# Apply specific stash
-git stash apply stash@{1}
 ```
-
-## 🎯 42 School Specific Tips
-
-- Always ensure code passes **norminette** before committing
-- Run `make && make clean` before major commits
-- Test with Valgrind for memory leaks
-- Keep commits atomic and focused
-- Write descriptive commit messages for evaluation
-
----
-
-*Remember: Clean Git history makes code review and debugging much easier!*
