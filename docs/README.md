@@ -1,101 +1,77 @@
 # 📚 Documentation Minishell
 
-## 📋 Vue d'ensemble
-
-Ce dossier contient toute la documentation du projet Minishell, organisée de manière claire et concise.
-
-## 📄 Fichiers disponibles
+## 🎯 Documentation technique
 
 ### 🏗️ [architecture.md](architecture.md)
-**Description technique du système**
-- Vue d'ensemble de l'architecture
-- Pipeline de traitement des données
+**Architecture du système**
+- Pipeline de traitement (Lexer → Parser → Executor)
 - Structures de données principales
-- Gestion mémoire et erreurs
+- Modularité et responsabilités
 
-### 📚 [api_reference.md](api_reference.md)
+### � [api_reference.md](api_reference.md)
 **Référence des fonctions**
 - Fonctions principales par module
-- Paramètres et valeurs de retour
-- Exemples d'utilisation
-- Codes de retour
+- Prototypes et descriptions
+- Gestion d'erreurs
 
 ### 💡 [examples.md](examples.md)
-**Exemples pratiques**
-- Utilisation de base du shell
-- Exemples d'implémentation
+**Exemples d'utilisation**
+- Cas d'usage typiques
+- Exemples de code
 - Bonnes pratiques
-- Cas d'usage avancés
 
 ### ❓ [faq.md](faq.md)
 **Questions fréquentes**
 - Installation et configuration
 - Développement et débogage
 - Problèmes courants
-- Ressources utiles
 
 ### 🔄 [git_workflow.md](git_workflow.md)
 **Workflow Git**
 - Configuration et utilisation
 - Conventions de commit
 - Gestion des branches
-- Collaboration
 
 ## 📋 Gestion de projet
 
-### 🎯 Outils de planification
-
-- **[Base de données Notion](NOTION_DATABASE.md)** - CSV prêt à importer avec toutes les tâches
-- **[Configuration avancée Notion](NOTION_ADVANCED.md)** - Dashboards, formules et métriques
-- **[Guide de démarrage rapide](NOTION_QUICK_START.md)** - Mise en route en 5 minutes
-- **[Critères d'acceptation](ACCEPTANCE_CRITERIA.md)** - DoD pour chaque tâche
-- **[User Stories](USER_STORIES.md)** - Templates et exemples concrets
-
-### 🎨 Workflows recommandés
-
-1. **Importer la base de données** depuis le CSV
-2. **Configurer les vues** (Kanban, Sprint, Timeline)
-3. **Définir les assignations** et priorités
-4. **Suivre l'avancement** quotidiennement
-5. **Ajuster selon les rétrospectives**
+### 🚀 [PROJECT_MANAGEMENT.md](PROJECT_MANAGEMENT.md)
+**Guide complet** - Planning 2 personnes, 6 semaines
+- CSV optimisé pour Notion
+- Répartition des tâches
+- Timeline réaliste
+- Conseils pratiques
 
 ## 🎯 Comment utiliser cette documentation
 
 ### Pour commencer
-
-1. Lisez d'abord le [README principal](../README.md)
-2. Consultez la [FAQ](faq.md) pour l'installation
-3. Parcourez les [exemples](examples.md) pour comprendre l'utilisation
+1. Lisez [PROJECT_MANAGEMENT.md](PROJECT_MANAGEMENT.md) pour le planning
+2. Consultez [faq.md](faq.md) pour l'installation
+3. Parcourez [examples.md](examples.md) pour comprendre l'utilisation
 
 ### Pour développer
-
-1. Étudiez l'[architecture](architecture.md) du système
-2. Consultez la [référence API](api_reference.md) pour les fonctions
-3. Suivez le [workflow Git](git_workflow.md) pour contribuer
+1. Étudiez [architecture.md](architecture.md) du système
+2. Consultez [api_reference.md](api_reference.md) pour les fonctions
+3. Suivez [git_workflow.md](git_workflow.md) pour contribuer
 
 ### Pour déboguer
+1. Vérifiez [faq.md](faq.md) pour les problèmes courants
+2. Consultez [examples.md](examples.md) pour les bonnes pratiques
 
-1. Vérifiez la [FAQ](faq.md) pour les problèmes courants
-2. Consultez les [exemples](examples.md) pour les bonnes pratiques
-3. Référez-vous à l'[API](api_reference.md) pour les détails techniques
-
-## 🔧 Maintenance de la documentation
+## 🔧 Maintenance
 
 ### Principes
-
 - **Concision** : Information essentielle uniquement
-- **Clarté** : Exemples et explications simples
-- **Actualité** : Mise à jour régulière
+- **Actualité** : Mise à jour avec le code
 - **Praticité** : Focus sur l'utilisation réelle
 
 ### Contribution
-
-Pour améliorer la documentation :
-
 1. Identifiez les lacunes ou erreurs
 2. Proposez des améliorations via PR
-3. Suivez le style existant
-4. Testez vos exemples
+3. Testez vos exemples
+
+---
+
+**Note** : Documentation simplifiée et maintenue en parallèle du code source.
 
 ---
 
