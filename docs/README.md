@@ -41,19 +41,40 @@ Ce dossier contient toute la documentation du projet Minishell, organisée de ma
 - Gestion des branches
 - Collaboration
 
+## 📋 Gestion de projet
+
+### 🎯 Outils de planification
+
+- **[Base de données Notion](NOTION_DATABASE.md)** - CSV prêt à importer avec toutes les tâches
+- **[Configuration avancée Notion](NOTION_ADVANCED.md)** - Dashboards, formules et métriques
+- **[Guide de démarrage rapide](NOTION_QUICK_START.md)** - Mise en route en 5 minutes
+- **[Critères d'acceptation](ACCEPTANCE_CRITERIA.md)** - DoD pour chaque tâche
+- **[User Stories](USER_STORIES.md)** - Templates et exemples concrets
+
+### 🎨 Workflows recommandés
+
+1. **Importer la base de données** depuis le CSV
+2. **Configurer les vues** (Kanban, Sprint, Timeline)
+3. **Définir les assignations** et priorités
+4. **Suivre l'avancement** quotidiennement
+5. **Ajuster selon les rétrospectives**
+
 ## 🎯 Comment utiliser cette documentation
 
 ### Pour commencer
+
 1. Lisez d'abord le [README principal](../README.md)
 2. Consultez la [FAQ](faq.md) pour l'installation
 3. Parcourez les [exemples](examples.md) pour comprendre l'utilisation
 
 ### Pour développer
+
 1. Étudiez l'[architecture](architecture.md) du système
 2. Consultez la [référence API](api_reference.md) pour les fonctions
 3. Suivez le [workflow Git](git_workflow.md) pour contribuer
 
 ### Pour déboguer
+
 1. Vérifiez la [FAQ](faq.md) pour les problèmes courants
 2. Consultez les [exemples](examples.md) pour les bonnes pratiques
 3. Référez-vous à l'[API](api_reference.md) pour les détails techniques
@@ -61,13 +82,16 @@ Ce dossier contient toute la documentation du projet Minishell, organisée de ma
 ## 🔧 Maintenance de la documentation
 
 ### Principes
+
 - **Concision** : Information essentielle uniquement
 - **Clarté** : Exemples et explications simples
 - **Actualité** : Mise à jour régulière
 - **Praticité** : Focus sur l'utilisation réelle
 
 ### Contribution
+
 Pour améliorer la documentation :
+
 1. Identifiez les lacunes ou erreurs
 2. Proposez des améliorations via PR
 3. Suivez le style existant
