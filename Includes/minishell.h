@@ -6,7 +6,7 @@
 /*   By: anpayot <anpayot@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 00:00:00 by minishell         #+#    #+#             */
-/*   Updated: 2025/06/28 17:12:41 by anpayot          ###   ########.fr       */
+/*   Updated: 2025/07/11 13:53:13 by anpayot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef struct s_shell
 	char	**env;
 	int		exit_status;
 	int		should_exit;
+	char	*input;
 }	t_shell;
 
 /* ************************************************************************** */
@@ -103,7 +104,7 @@ typedef struct s_shell
 int		main(int argc, char **argv, char **envp);
 
 /* Shell initialization */
-void	init_shell(t_shell *shell, char **envp);
+int		init_shell(t_shell *shell, char **envp);
 void	cleanup_shell(t_shell *shell);
 
 /* Lexer functions */
@@ -136,6 +137,12 @@ char	**ft_split(char const *s, char c);
 void	ft_free_array(char **array);
 char	*ft_getenv(const char *name, char **env);
 void	ft_setenv(const char *name, const char *value, char ***env);
+int		ft_strcmp(const char *s1, const char *s2);
+char	*ft_strjoin(char const *s1, char const *s2);
+int		ft_strlen(const char *s);
+
+/* Shell loop functions */
+void	shell_loop(t_shell *shell);
 
 /* Error handling */
 void	print_error(const char *message);
