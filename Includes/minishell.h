@@ -6,7 +6,7 @@
 /*   By: anpayot <anpayot@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 00:00:00 by minishell         #+#    #+#             */
-/*   Updated: 2025/07/11 13:53:13 by anpayot          ###   ########.fr       */
+/*   Updated: 2025/07/11 14:00:33 by anpayot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,5 +147,8 @@ void	shell_loop(t_shell *shell);
 /* Error handling */
 void	print_error(const char *message);
 void	exit_error(const char *message, int exit_code);
+
+/* Include detailed documentation after structure definitions */
+# include "minishell_doc.h"
 
 #endif /* MINISHELL_H */
