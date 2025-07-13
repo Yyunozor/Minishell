@@ -6,7 +6,7 @@
 /*   By: anpayot <anpayot@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 00:00:00 by minishell         #+#    #+#             */
-/*   Updated: 2025/07/11 16:33:09 by anpayot          ###   ########.fr       */
+/*   Updated: 2025/07/13 17:21:23 by anpayot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,29 +117,48 @@ void	free_commands(t_cmd *commands);
 
 /* Executor functions */
 int		execute_commands(t_cmd *commands, t_shell *shell);
+int		is_builtin(char *cmd);
+int		execute_builtin(t_cmd *cmd, t_shell *shell);
+int		execute_external(t_cmd *cmd, t_shell *shell);
 
-/* Built-in commands */
-int		builtin_echo(char **args);
-int		builtin_cd(char **args, t_shell *shell);
-int		builtin_pwd(void);
-int		builtin_export(char **args, t_shell *shell);
-int		builtin_unset(char **args, t_shell *shell);
-int		builtin_env(t_shell *shell);
-int		builtin_exit(char **args, t_shell *shell);
+/* Pipe and redirection functions */
+int		setup_pipes(t_cmd *commands);
+int		handle_redirections(t_cmd *cmd);
+int		redirect_input(char *filename);
+int		redirect_output(char *filename, int append);
+int		handle_heredoc(char *delimiter);
 
-/* Signal handling */
-void	setup_signals(void);
-void	signal_handler(int signum);
+/* Variable expansion */
+char	*expand_variables(char *str, t_shell *shell);
+char	*expand_exit_status(char *str, int exit_status);
 
-/* Utility functions */
-char	*ft_strdup(const char *s);
-char	**ft_split(char const *s, char c);
-void	ft_free_array(char **array);
-char	*ft_getenv(const char *name, char **env);
-void	ft_setenv(const char *name, const char *value, char ***env);
-int		ft_strcmp(const char *s1, const char *s2);
-char	*ft_strjoin(char const *s1, char const *s2);
-int		ft_strlen(const char *s);
+/* Path resolution */
+char	*find_executable(char *cmd, char **env);
+char	**get_path_dirs(char **env);
+
+/* Quote handling */
+char	*remove_quotes(char *str);
+int		count_quotes(char *str, char quote_type);
+
+/* Environment utilities */
+int		env_size(char **env);
+char	**copy_env(char **env);
+char	**add_env_var(char **env, char *var);
+char	**remove_env_var(char **env, char *name);
+
+/* String utilities */
+int		ft_isdigit(int c);
+int		ft_isalpha(int c);
+int		ft_isalnum(int c);
+char	*ft_itoa(int n);
+int		ft_atoi(const char *str);
+char	*ft_strchr(const char *s, int c);
+char	*ft_strncmp(const char *s1, const char *s2, size_t n);
+void	*ft_memcpy(void *dst, const void *src, size_t n);
+
+/* Process management */
+pid_t	ft_fork(void);
+int		wait_for_children(pid_t *pids, int count);
 
 /* Shell loop functions */
 void	shell_loop(t_shell *shell);
@@ -147,7 +166,7 @@ void	shell_loop(t_shell *shell);
 /* Error handling */
 void	print_error(const char *message);
 void	exit_error(const char *message, int exit_code);
-
-# include "minishell_doc.h"
+void	print_command_error(char *cmd, char *message);
+void	print_syntax_error(char *token);
 
 #endif /* MINISHELL_H */
