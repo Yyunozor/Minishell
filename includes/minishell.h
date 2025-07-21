@@ -17,6 +17,7 @@
 /*                                  INCLUDES                                  */
 /* ************************************************************************** */
 
+# include "minishell_docs.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -147,6 +148,7 @@ char	**add_env_var(char **env, char *var);
 char	**remove_env_var(char **env, char *name);
 
 /* String utilities */
+/* Documented utility functions are declared in minishell_docs.h */
 int		ft_isdigit(int c);
 int		ft_isalpha(int c);
 int		ft_isalnum(int c);

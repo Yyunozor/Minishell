@@ -18,15 +18,15 @@
  * This is the main function that initializes the shell environment,
  * sets up signal handlers, and starts the main shell loop.
  * 
- * @param argc Argument count
- * @param argv Argument vector
+ * @param ac Argument count
+ * @param av Argument vector
  * @param envp Environment variables
  * @return int Exit status (0 for success, non-zero for error)
  */
-int	main(int argc, char **argv, char **envp)
+int	main(int ac, char **av, char **envp)
 {
-	(void)argc;
-	(void)argv;
+	(void)ac;
+	(void)av;
 	(void)envp;
 	printf("Minishell - A basic shell implementation\n");
 	printf("This is a skeleton implementation.\n");

@@ -1,7 +1,5 @@
-// #include "../../includes/minishell.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
+#include "../../includes/minishell.h"
+#include "../../includes/minishell_docs.h"
 
 void	ft_putstr(char *str)
 {
@@ -10,6 +8,7 @@ void	ft_putstr(char *str)
 	while(*str)
 		write(1, str++, 1);
 }
+
 
 size_t	ft_strlen(const char *str)
 {
@@ -62,26 +61,4 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		*ptr++ = *s2++;
 	*ptr = '\0';
 	return (joined_str);
-}
-
- 
-
-int	main(void)
-{
-	char *str = "salut les gens\t ";
-	char *str2 = "\t\t\tet aurevoir !";
-	char *dup;
-	char *join;
-
-	ft_putstr(str);
-	printf("len = %ld\n", ft_strlen(str));
-
-	dup = ft_strdup(str);
-	printf("dup = %s\n", dup);
-	free(dup);
-	join = ft_strjoin(str, str2);
-	printf("join = %s\n", join);
-
-	printf("end\n");
-	return (0);
 }
