@@ -6,7 +6,7 @@
 #    By: anpayot <anpayot@student.42lausanne.ch>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/24 13:42:56 by anpayot           #+#    #+#              #
-#    Updated: 2025/06/28 19:14:03 by anpayot          ###   ########.fr        #
+#    Updated: 2025/08/06 12:38:37 by anpayot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,8 +67,22 @@ endif
 # Source files
 MAIN_SRC = main.c
 
+# Utils source files
+UTILS_SRCS = utils/ft_strlen.c \
+			 utils/ft_strcmp.c \
+			 utils/ft_strncmp.c \
+			 utils/ft_strchr.c \
+			 utils/ft_memcpy.c \
+			 utils/char_utils.c \
+			 utils/ft_atoi.c \
+			 utils/ft_strdup.c \
+			 utils/ft_strjoin.c \
+			 utils/ft_split.c \
+			 utils/ft_itoa.c \
+			 utils/ft_free_array.c
+
 # All source files
-SRCS = $(MAIN_SRC)
+SRCS = $(MAIN_SRC) $(UTILS_SRCS)
 
 # Object files
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)

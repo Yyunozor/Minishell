@@ -6,7 +6,7 @@
 /*   By: anpayot <anpayot@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 00:00:00 by minishell         #+#    #+#             */
-/*   Updated: 2025/07/13 17:21:23 by anpayot          ###   ########.fr       */
+/*   Updated: 2025/08/06 12:38:37 by anpayot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,14 +148,21 @@ char	**add_env_var(char **env, char *var);
 char	**remove_env_var(char **env, char *name);
 
 /* String utilities */
-/* Documented utility functions are declared in minishell_docs.h */
+char	*ft_strdup(const char *s);
+char	**ft_split(char const *s, char c);
+void	ft_free_array(char **array);
+char	*ft_getenv(const char *name, char **env);
+void	ft_setenv(const char *name, const char *value, char ***env);
+int		ft_strcmp(const char *s1, const char *s2);
+char	*ft_strjoin(char const *s1, char const *s2);
+int		ft_strlen(const char *s);
 int		ft_isdigit(int c);
 int		ft_isalpha(int c);
 int		ft_isalnum(int c);
 char	*ft_itoa(int n);
 int		ft_atoi(const char *str);
 char	*ft_strchr(const char *s, int c);
-char	*ft_strncmp(const char *s1, const char *s2, size_t n);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 
 /* Process management */
